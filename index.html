@@ -136,19 +136,32 @@
     <script type="text/javascript" src="js/script.js" defer></script>
 
     <script>
-   document.addEventListener('DOMContentLoaded', function() {
-       setTimeout(function() {
-           let startButton = document.getElementById('btn-start');
-           console.log("Start button: ", startButton);  // Check if button is found
-           if (startButton) {
-               startButton.click();
-               console.log("Button clicked!");
-           } else {
-               console.log("Button not found!");
-           }
-       }, 5000);  // Adding delay to ensure button is loaded
-   });
+    document.addEventListener('DOMContentLoaded', function() {
+        let stopClicked = false;  // Track if stop button has been clicked
+
+        // Listen for stop button click
+        document.getElementById('btn-stop').addEventListener('click', function() {
+            stopClicked = true;  // Set the flag when stop button is clicked
+            console.log("Stop clicked. Auto restart disabled.");
+        });
+
+        setTimeout(function() {
+            let startButton = document.getElementById('btn-start');
+            console.log("Start button: ", startButton);  // Check if button is found
+            
+            // Only click the start button if stop has NOT been clicked
+            if (startButton && !stopClicked) {
+                startButton.click();
+                console.log("Button clicked automatically after delay!");
+            } else if (stopClicked) {
+                console.log("Auto start prevented due to stop button click.");
+            } else {
+                console.log("Button not found!");
+            }
+        }, 5000);  // Adding delay to ensure button is loaded
+    });
 </script>
+
 
 </body>
 </html>
