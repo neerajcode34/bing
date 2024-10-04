@@ -137,7 +137,7 @@
 
 
 
-    <script>
+<!--     <script>
     document.addEventListener('DOMContentLoaded', function() {
         let autoStartTimeout;  // Variable to store the timeout ID
         let isStopped = false;  // Flag to track if stop button has been clicked
@@ -172,6 +172,46 @@
         document.getElementById('btn-stop').addEventListener('click', function() {
             isStopped = true;  // Mark as stopped
             clearTimeout(autoStartTimeout);  // Clear the timeout if stop is clicked
+            console.log("Auto-search stopped!");
+            sessionStorage.setItem('autoStarted', 'true');  // Keep it as true to prevent further auto-starts
+        });
+    });
+</script> -->
+
+
+
+
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        let isStopped = false;  // Flag to track if stop button has been clicked
+
+        // Check if auto-start has already happened in this session
+        let hasAutoStarted = sessionStorage.getItem('autoStarted') === 'true';
+
+        // Function to automatically start the search (only on refresh)
+        function autoStartSearch() {
+            if (!hasAutoStarted) {
+                let startButton = document.getElementById('btn-start');
+                console.log("Start button: ", startButton);  // Check if button is found
+
+                // Only click the start button if it hasn't been stopped
+                if (startButton && !isStopped) {
+                    startButton.click();
+                    console.log("Auto-search started!");
+                    // Mark auto-start as true in sessionStorage (only for this session)
+                    sessionStorage.setItem('autoStarted', 'true');
+                } else {
+                    console.log("Auto-search prevented because stop button was clicked.");
+                }
+            }
+        }
+
+        // Start auto search on page load (if not already started)
+        autoStartSearch();
+
+        // Stop auto search when the stop button is clicked
+        document.getElementById('btn-stop').addEventListener('click', function() {
+            isStopped = true;  // Mark as stopped
             console.log("Auto-search stopped!");
             sessionStorage.setItem('autoStarted', 'true');  // Keep it as true to prevent further auto-starts
         });
