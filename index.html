@@ -181,11 +181,11 @@
 
 
 
-   <script>
+<script>
     document.addEventListener('DOMContentLoaded', function() {
-        let isStopped = false;  // Flag to track if stop button has been clicked
+        let isStopped = false;  // Flag to track if the stop button has been clicked
 
-        // Function to automatically start the search (only on refresh)
+        // Function to automatically start the search
         function autoStartSearch() {
             let startButton = document.getElementById('btn-start');
             console.log("Start button: ", startButton);  // Check if button is found
@@ -194,29 +194,22 @@
             if (startButton && !isStopped) {
                 startButton.click();
                 console.log("Auto-search started!");
-                // Mark auto-start as true in sessionStorage (only for this session)
-                sessionStorage.setItem('autoStarted', 'true');
             } else {
-                console.log("Auto-search prevented because stop button was clicked or already started.");
+                console.log("Auto-search prevented because stop button was clicked.");
             }
         }
 
-        // Check if auto-start has already happened in this session
-        let hasAutoStarted = sessionStorage.getItem('autoStarted') === 'true';
-
-        // Start auto search on page load (if not already started)
-        if (!hasAutoStarted) {
-            autoStartSearch();
-        }
+        // Start auto search on page load
+        autoStartSearch();
 
         // Stop auto search when the stop button is clicked
         document.getElementById('btn-stop').addEventListener('click', function() {
             isStopped = true;  // Mark as stopped
             console.log("Auto-search stopped!");
-            sessionStorage.setItem('autoStarted', 'true');  // Keep it as true to prevent further auto-starts
         });
     });
 </script>
+
 
 
 
