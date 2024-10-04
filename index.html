@@ -136,7 +136,8 @@
     <script type="text/javascript" src="js/script.js" defer></script>
 
 
-  <script>
+
+    <script>
     document.addEventListener('DOMContentLoaded', function() {
         let autoStartTimeout;  // Variable to store the timeout ID
         let isStopped = false;  // Flag to track if stop button has been clicked
@@ -172,11 +173,11 @@
             isStopped = true;  // Mark as stopped
             clearTimeout(autoStartTimeout);  // Clear the timeout if stop is clicked
             console.log("Auto-search stopped!");
-            // Remove the sessionStorage flag, allowing future refreshes to trigger auto-start
-            sessionStorage.removeItem('autoStarted');
+            sessionStorage.setItem('autoStarted', 'true');  // Keep it as true to prevent further auto-starts
         });
     });
 </script>
+
 
 
 
