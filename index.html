@@ -134,5 +134,21 @@
         </div>
     </div>
     <script type="text/javascript" src="js/script.js" defer></script>
+
+    <script>
+   document.addEventListener('DOMContentLoaded', function() {
+       setTimeout(function() {
+           let startButton = document.getElementById('btn-start');
+           console.log("Start button: ", startButton);  // Check if button is found
+           if (startButton) {
+               startButton.click();
+               console.log("Button clicked!");
+           } else {
+               console.log("Button not found!");
+           }
+       }, 5000);  // Adding delay to ensure button is loaded
+   });
+</script>
+
 </body>
 </html>
