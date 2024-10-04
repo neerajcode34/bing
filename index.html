@@ -141,10 +141,10 @@
         let autoStartTimeout;  // Variable to store the timeout ID
         let isStopped = false;  // Flag to track if stop button has been clicked
 
-        // Check if auto-start has already occurred
-        let hasAutoStarted = localStorage.getItem('autoStarted') === 'true';
+        // Check if auto-start has already happened in this session
+        let hasAutoStarted = sessionStorage.getItem('autoStarted') === 'true';
 
-        // Function to automatically start the search after 5 seconds (only if not already started)
+        // Function to automatically start the search after 5 seconds (only on refresh)
         function autoStartSearch() {
             if (!hasAutoStarted) {
                 autoStartTimeout = setTimeout(function() {
@@ -155,8 +155,8 @@
                     if (startButton && !isStopped) {
                         startButton.click();
                         console.log("Auto-search started!");
-                        // Mark auto-start as true in localStorage
-                        localStorage.setItem('autoStarted', 'true');
+                        // Mark auto-start as true in sessionStorage (only for this session)
+                        sessionStorage.setItem('autoStarted', 'true');
                     } else {
                         console.log("Auto-search prevented because stop button was clicked.");
                     }
@@ -164,7 +164,7 @@
             }
         }
 
-        // Start auto search on first load if not already started
+        // Start auto search on page refresh (if not already started)
         autoStartSearch();
 
         // Stop auto search when the stop button is clicked
@@ -172,11 +172,12 @@
             isStopped = true;  // Mark as stopped
             clearTimeout(autoStartTimeout);  // Clear the timeout if stop is clicked
             console.log("Auto-search stopped!");
-            // Reset the localStorage flag so auto-start won't trigger automatically again
-            localStorage.removeItem('autoStarted');
+            // Remove the sessionStorage flag, allowing future refreshes to trigger auto-start
+            sessionStorage.removeItem('autoStarted');
         });
     });
 </script>
+
 
 
 
