@@ -181,33 +181,33 @@
 
 
 
-    <script>
+   <script>
     document.addEventListener('DOMContentLoaded', function() {
         let isStopped = false;  // Flag to track if stop button has been clicked
+
+        // Function to automatically start the search (only on refresh)
+        function autoStartSearch() {
+            let startButton = document.getElementById('btn-start');
+            console.log("Start button: ", startButton);  // Check if button is found
+
+            // Only click the start button if it hasn't been stopped
+            if (startButton && !isStopped) {
+                startButton.click();
+                console.log("Auto-search started!");
+                // Mark auto-start as true in sessionStorage (only for this session)
+                sessionStorage.setItem('autoStarted', 'true');
+            } else {
+                console.log("Auto-search prevented because stop button was clicked or already started.");
+            }
+        }
 
         // Check if auto-start has already happened in this session
         let hasAutoStarted = sessionStorage.getItem('autoStarted') === 'true';
 
-        // Function to automatically start the search (only on refresh)
-        function autoStartSearch() {
-            if (!hasAutoStarted) {
-                let startButton = document.getElementById('btn-start');
-                console.log("Start button: ", startButton);  // Check if button is found
-
-                // Only click the start button if it hasn't been stopped
-                if (startButton && !isStopped) {
-                    startButton.click();
-                    console.log("Auto-search started!");
-                    // Mark auto-start as true in sessionStorage (only for this session)
-                    sessionStorage.setItem('autoStarted', 'true');
-                } else {
-                    console.log("Auto-search prevented because stop button was clicked.");
-                }
-            }
-        }
-
         // Start auto search on page load (if not already started)
-        autoStartSearch();
+        if (!hasAutoStarted) {
+            autoStartSearch();
+        }
 
         // Stop auto search when the stop button is clicked
         document.getElementById('btn-stop').addEventListener('click', function() {
@@ -217,6 +217,7 @@
         });
     });
 </script>
+
 
 
 
