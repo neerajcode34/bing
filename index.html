@@ -136,35 +136,48 @@
     <script type="text/javascript" src="js/script.js" defer></script>
 
 
-    <script>
+  <script>
     document.addEventListener('DOMContentLoaded', function() {
-        let stopClicked = false;  // Track if stop button has been clicked
-        let autoStartTimeout;  // Store the timeout ID
+        let autoStartTimeout;  // Variable to store the timeout ID
+        let isStopped = false;  // Flag to track if stop button has been clicked
 
-        // Listen for stop button click
-        document.getElementById('btn-stop').addEventListener('click', function() {
-            stopClicked = true;  // Set the flag when stop button is clicked
-            clearTimeout(autoStartTimeout);  // Clear the auto-start timeout
-            console.log("Stop clicked. Auto restart disabled.");
-        });
+        // Check if auto-start has already occurred
+        let hasAutoStarted = localStorage.getItem('autoStarted') === 'true';
 
-        // Set a timeout to start the auto search after 5 seconds
-        autoStartTimeout = setTimeout(function() {
-            let startButton = document.getElementById('btn-start');
-            console.log("Start button: ", startButton);  // Check if button is found
+        // Function to automatically start the search after 5 seconds (only if not already started)
+        function autoStartSearch() {
+            if (!hasAutoStarted) {
+                autoStartTimeout = setTimeout(function() {
+                    let startButton = document.getElementById('btn-start');
+                    console.log("Start button: ", startButton);  // Check if button is found
 
-            // Only click the start button if stop has NOT been clicked
-            if (startButton && !stopClicked) {
-                startButton.click();
-                console.log("Button clicked automatically after delay!");
-            } else if (stopClicked) {
-                console.log("Auto start prevented due to stop button click.");
-            } else {
-                console.log("Button not found!");
+                    // Only click the start button if it hasn't been stopped
+                    if (startButton && !isStopped) {
+                        startButton.click();
+                        console.log("Auto-search started!");
+                        // Mark auto-start as true in localStorage
+                        localStorage.setItem('autoStarted', 'true');
+                    } else {
+                        console.log("Auto-search prevented because stop button was clicked.");
+                    }
+                }, 5000);  // Delay of 5 seconds
             }
-        }, 5000);  // Adding delay to ensure button is loaded
+        }
+
+        // Start auto search on first load if not already started
+        autoStartSearch();
+
+        // Stop auto search when the stop button is clicked
+        document.getElementById('btn-stop').addEventListener('click', function() {
+            isStopped = true;  // Mark as stopped
+            clearTimeout(autoStartTimeout);  // Clear the timeout if stop is clicked
+            console.log("Auto-search stopped!");
+            // Reset the localStorage flag so auto-start won't trigger automatically again
+            localStorage.removeItem('autoStarted');
+        });
     });
 </script>
+
 
 
    
